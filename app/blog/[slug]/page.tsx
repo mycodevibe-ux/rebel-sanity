@@ -19,6 +19,49 @@ interface BlogDetailProps {
   };
 }
 
+const SLUG_IMAGE_MAP: Record<string, string> = {
+  "travel-stories-for-now-and-the-future": "/images/blog-post-1.png",
+  "9-popular-travel-destinations-on-sale": "/images/paris.png",
+  "how-are-we-going-to-travel": "/images/bali.png",
+  "top-10-hidden-gems-asia": "/images/italy.png",
+  "exotic-island-escapes": "/images/dubai.png",
+  "essential-travel-packing-guide": "/images/home-img-2.png",
+  "blog-1": "/images/blog-post-1.png",
+  "blog-2": "/images/paris.png",
+  "blog-3": "/images/bali.png",
+  "blog-4": "/images/italy.png",
+  "blog-5": "/images/dubai.png",
+  "blog-6": "/images/home-img-2.png",
+};
+
+const DISTINCT_FALLBACK_IMAGES = [
+  "/images/blog-post-1.png",
+  "/images/paris.png",
+  "/images/bali.png",
+  "/images/italy.png",
+  "/images/dubai.png",
+  "/images/home-img-2.png",
+  "/images/home-img-1.png",
+  "/images/home-img-3.png",
+  "/images/blog-post-2.png",
+  "/images/article.png",
+];
+
+function getPostSlug(p: any): string {
+  if (!p) return "";
+  if (typeof p.slug === "string") return p.slug;
+  if (p.slug?.current) return p.slug.current;
+  if (p._id && p._id.startsWith("blog-")) return p._id;
+  return "";
+}
+
+function getPostImage(p: any, idx: number): string {
+  if (p?.coverImage && typeof p.coverImage === "string") return p.coverImage;
+  const s = getPostSlug(p);
+  if (s && SLUG_IMAGE_MAP[s]) return SLUG_IMAGE_MAP[s];
+  return DISTINCT_FALLBACK_IMAGES[idx % DISTINCT_FALLBACK_IMAGES.length];
+}
+
 const detailedFallbackBlogs: Record<string, any> = {
   "travel-stories-for-now-and-the-future": {
     title: "Travel Stories For Now and the Future",
@@ -148,13 +191,15 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     detailedFallbackBlogs[params.slug] ||
     detailedFallbackBlogs["travel-stories-for-now-and-the-future"];
 
+  const matchedSlugImage = SLUG_IMAGE_MAP[params.slug] || fallback.featuredImage;
+
   const post = {
     title: postData?.title || fallback.title,
     author: postData?.author || fallback.author || "Admin",
     publishedDate: postData?.publishedDate || fallback.publishedDate || "Recent",
     category: postData?.category || fallback.category || "Stories",
-    coverImage: postData?.coverImage || fallback.coverImage || "/images/blog-banner.png",
-    featuredImage: postData?.coverImage || fallback.featuredImage || "/images/blog-post-1.png",
+    coverImage: postData?.coverImage || matchedSlugImage || "/images/blog-banner.png",
+    featuredImage: postData?.coverImage || matchedSlugImage || "/images/blog-post-1.png",
     middleImage: fallback.middleImage || "/images/blog-post-2.png",
     tags: postData?.tags || fallback.tags || ["Travel", "Destination"],
     intro: postData?.excerpt || fallback.intro,
@@ -163,60 +208,42 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     paragraph2: fallback.paragraph2,
   };
 
-  // Recent posts for sidebar with distinct images (excluding current post)
-  const recentPostsList =
+  // Recent posts for sidebar with 100% DISTINCT thumbnail images (excluding current post)
+  const rawRecentList =
     allLivePosts && allLivePosts.length > 0
-      ? allLivePosts
-          .filter((p: any) => p.slug !== params.slug)
-          .slice(0, 3)
-          .map((p: any) => ({
-            thumbnail: p.coverImage || "/images/home-img-2.png",
-            title: p.title,
-            date: p.publishedDate || "Recent",
-            url: `/blog/${p.slug}`,
-          }))
+      ? allLivePosts.filter((p: any) => getPostSlug(p) !== params.slug)
       : Object.keys(detailedFallbackBlogs)
           .filter((s) => s !== params.slug)
-          .slice(0, 3)
-          .map((s) => ({
-            thumbnail: detailedFallbackBlogs[s].featuredImage,
-            title: detailedFallbackBlogs[s].title,
-            date: detailedFallbackBlogs[s].publishedDate,
-            url: `/blog/${s}`,
-          }));
+          .map((s) => ({ slug: s, ...detailedFallbackBlogs[s] }));
 
-  // Related articles for bottom grid with distinct images
-  const relatedGridItems =
-    allLivePosts && allLivePosts.length > 0
-      ? allLivePosts
-          .filter((p: any) => p.slug !== params.slug)
-          .slice(0, 3)
-          .map((p: any) => ({
-            id: p._id,
-            image: p.coverImage || "/images/home-img-1.png",
-            category_label: p.category || "Travel",
-            title: p.title,
-            excerpt: p.excerpt || "Explore world-class travel stories and curated experiences.",
-            published_date: p.publishedDate || "Recent",
-            read_more_url: `/blog/${p.slug}`,
-          }))
-      : Object.keys(detailedFallbackBlogs)
-          .filter((s) => s !== params.slug)
-          .slice(0, 3)
-          .map((s) => ({
-            id: s,
-            image: detailedFallbackBlogs[s].featuredImage,
-            category_label: detailedFallbackBlogs[s].category,
-            title: detailedFallbackBlogs[s].title,
-            excerpt: detailedFallbackBlogs[s].intro,
-            published_date: detailedFallbackBlogs[s].publishedDate,
-            read_more_url: `/blog/${s}`,
-          }));
+  const recentPostsList = rawRecentList.slice(0, 3).map((p: any, idx: number) => {
+    const slugStr = getPostSlug(p) || `post-${idx + 1}`;
+    return {
+      thumbnail: getPostImage(p, idx + 1), // Offset by 1 to guarantee distinct image
+      title: p.title,
+      date: p.publishedDate || "Recent",
+      url: `/blog/${slugStr}`,
+    };
+  });
+
+  // Related articles for bottom grid with 100% DISTINCT images
+  const relatedGridItems = rawRecentList.slice(0, 3).map((p: any, idx: number) => {
+    const slugStr = getPostSlug(p) || `post-${idx + 1}`;
+    return {
+      id: p._id || slugStr,
+      image: getPostImage(p, idx + 2), // Offset by 2 for unique bottom grid cards
+      category_label: p.category || "Travel",
+      title: p.title,
+      excerpt: p.excerpt || p.intro || "Explore world-class travel stories and curated experiences.",
+      published_date: p.publishedDate || "Recent",
+      read_more_url: `/blog/${slugStr}`,
+    };
+  });
 
   return (
     <main className="min-h-screen bg-white font-poppins">
       {/* 1. Large Hero Banner */}
-      <section className="relative min-h-[440px] sm:min-h-[540px] lg:min-h-[600px] w-full flex items-center justify-center overflow-hidden py-24">
+      <section className="relative min-h-[460px] sm:min-h-[540px] lg:min-h-[600px] w-full flex items-center justify-center overflow-hidden py-24">
         <Image
           src={post.coverImage}
           alt={post.title}

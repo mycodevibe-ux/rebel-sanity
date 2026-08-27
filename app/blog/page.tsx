@@ -12,6 +12,33 @@ export const metadata: Metadata = {
   description: "Explore world-class travel stories, destination guides, eco-travel tips, and vacation advice with Rebel Rover.",
 };
 
+// 100% Unique Image Dictionary mapped to specific articles
+const SLUG_IMAGE_MAP: Record<string, string> = {
+  "travel-stories-for-now-and-the-future": "/images/blog-post-1.png",
+  "9-popular-travel-destinations-on-sale": "/images/paris.png",
+  "how-are-we-going-to-travel": "/images/bali.png",
+  "top-10-hidden-gems-asia": "/images/italy.png",
+  "exotic-island-escapes": "/images/dubai.png",
+  "essential-travel-packing-guide": "/images/home-img-2.png",
+  "blog-1": "/images/blog-post-1.png",
+  "blog-2": "/images/paris.png",
+  "blog-3": "/images/bali.png",
+  "blog-4": "/images/italy.png",
+};
+
+const DISTINCT_FALLBACK_IMAGES = [
+  "/images/blog-post-1.png",
+  "/images/paris.png",
+  "/images/bali.png",
+  "/images/italy.png",
+  "/images/dubai.png",
+  "/images/home-img-2.png",
+  "/images/home-img-1.png",
+  "/images/home-img-3.png",
+  "/images/blog-post-2.png",
+  "/images/article.png",
+];
+
 export const defaultBlogPosts = [
   {
     id: "blog-1",
@@ -107,15 +134,22 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const rawPosts = livePosts && livePosts.length > 0 ? livePosts : defaultBlogPosts;
 
   const allPosts = rawPosts.map((p: any, idx: number) => {
-    const fallbackImage = defaultBlogPosts[idx % defaultBlogPosts.length].coverImage;
+    const slugStr = typeof p.slug === "string" ? p.slug : p.slug?.current || `post-${idx + 1}`;
+    
+    // Strict priority: 1. CMS uploaded image, 2. Dedicated SLUG image, 3. Distinct unique indexed image
+    const finalCoverImage =
+      p.coverImage ||
+      SLUG_IMAGE_MAP[slugStr] ||
+      DISTINCT_FALLBACK_IMAGES[idx % DISTINCT_FALLBACK_IMAGES.length];
+
     return {
       id: p._id || p.id || `post-${idx}`,
       title: p.title || defaultBlogPosts[idx % defaultBlogPosts.length].title,
-      slug: typeof p.slug === "string" ? p.slug : p.slug?.current || defaultBlogPosts[idx % defaultBlogPosts.length].slug,
+      slug: slugStr,
       category: p.category || defaultBlogPosts[idx % defaultBlogPosts.length].category,
       author: p.author || defaultBlogPosts[idx % defaultBlogPosts.length].author,
       publishedDate: p.publishedDate || defaultBlogPosts[idx % defaultBlogPosts.length].publishedDate,
-      coverImage: p.coverImage || fallbackImage,
+      coverImage: finalCoverImage,
       excerpt: p.excerpt || defaultBlogPosts[idx % defaultBlogPosts.length].excerpt,
     };
   });
@@ -131,7 +165,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <main className="min-h-screen bg-white font-poppins">
       {/* 1. Large Hero Banner */}
-      <section className="relative min-h-[440px] sm:min-h-[520px] lg:min-h-[580px] w-full flex items-center justify-center overflow-hidden py-24">
+      <section className="relative min-h-[460px] sm:min-h-[540px] lg:min-h-[600px] w-full flex items-center justify-center overflow-hidden py-24">
         <Image
           src="/images/blog-banner.png"
           alt="Blog Hero Banner"
