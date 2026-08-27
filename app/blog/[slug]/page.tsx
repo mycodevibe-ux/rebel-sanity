@@ -44,13 +44,13 @@ const detailedFallbackBlogs: Record<string, any> = {
     category: "Travel Deals",
     coverImage: "/images/paris.png",
     featuredImage: "/images/paris.png",
-    middleImage: "/images/dubai.png",
+    middleImage: "/images/Package-banner.png",
     tags: ["Deals", "Packages"],
     intro:
       "Looking for your next dream getaway without breaking the bank? We have curated the top 9 most sought-after destinations offering seasonal discounts and all-inclusive packages.",
-    heading1: "From European Capitals to Middle Eastern Wonders",
+    heading1: "From European Capitals to Romantic Getaways",
     paragraph1:
-      "Whether you are wandering through the romantic cobblestone streets of Paris or admiring the futuristic skyline of Dubai, budget-friendly luxury travel is more accessible in 2024 than ever before.",
+      "Whether you are wandering through the romantic cobblestone streets of Paris or admiring the historic architecture of European old towns, budget-friendly luxury travel is more accessible in 2024 than ever before.",
     paragraph2:
       "Booking early and taking advantage of customized tour itineraries guarantees optimal flight deals, five-star handpicked hotel stays, and authentic cultural tours guided by certified experts.",
   },
@@ -88,6 +88,23 @@ const detailedFallbackBlogs: Record<string, any> = {
     paragraph2:
       "Local homestays and guided trek expeditions provide rare glimpses into traditional folklore, exotic culinary heritage, and unspoiled wilderness.",
   },
+  "exotic-island-escapes": {
+    title: "Exotic Desert & Futuristic Wonders in Dubai",
+    author: "Kausar Hasan",
+    publishedDate: "15 Aug 2023",
+    category: "Destination",
+    coverImage: "/images/dubai.png",
+    featuredImage: "/images/dubai.png",
+    middleImage: "/images/aboutbg.png",
+    tags: ["Destination", "Dubai"],
+    intro:
+      "Experience the captivating blend of golden Arabian dunes and futuristic architectural marvels in Dubai. Discover luxury desert safaris, sky-high dining, and sunset boat cruises.",
+    heading1: "Majestic Dunes & Modern Skylines",
+    paragraph1:
+      "From dune bashing across crimson sands to standing atop the highest observation decks in the world, Dubai offers unparalleled luxury and world-class hospitality.",
+    paragraph2:
+      "Explore historic gold souks, vibrant spice markets, and serene palm-fringed private beaches that make this city an essential stop on any world itinerary.",
+  },
   "essential-travel-packing-guide": {
     title: "The Ultimate Travel Packing Guide for World Explorers",
     author: "Sara Jay",
@@ -95,7 +112,7 @@ const detailedFallbackBlogs: Record<string, any> = {
     category: "Tips",
     coverImage: "/images/home-img-2.png",
     featuredImage: "/images/home-img-2.png",
-    middleImage: "/images/aboutbg.png",
+    middleImage: "/images/article.png",
     tags: ["Tips", "Guide"],
     intro:
       "Smart packing is the foundation of every stress-free journey. Master the art of minimalist, versatile travel gear tailored for any climate or adventure.",
@@ -104,23 +121,6 @@ const detailedFallbackBlogs: Record<string, any> = {
       "From breathable merino wool layers to universal power adapters and waterproof organizers, selecting multifunctional gear maximizes comfort and saves baggage fees.",
     paragraph2:
       "Always leave room in your luggage for unique handcrafted souvenirs and keepsakes gathered from local bazaars and artisan markets.",
-  },
-  "exotic-island-escapes": {
-    title: "Exotic Island Escapes You Need on Your Bucket List",
-    author: "Kausar Hasan",
-    publishedDate: "15 Aug 2023",
-    category: "Destination",
-    coverImage: "/images/dubai.png",
-    featuredImage: "/images/dubai.png",
-    middleImage: "/images/bali.png",
-    tags: ["Destination", "Beaches"],
-    intro:
-      "Trade everyday noise for the gentle rhythm of ocean tides. Discover serene tropical havens boasting coral reefs, private overwater villas, and golden sunsets.",
-    heading1: "Crystal Waters & Golden Horizon Retreats",
-    paragraph1:
-      "Whether sailing across the Indonesian archipelago or relaxing on secluded Mediterranean shores, island getaways provide unmatched rejuvenation for mind and spirit.",
-    paragraph2:
-      "Indulge in freshly caught seafood feasts, world-class scuba diving, and unforgettable sunset catamaran cruises beneath starlit skies.",
   },
 };
 
@@ -144,7 +144,9 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     client.fetch(blogPostsQuery, {}, { next: { revalidate: 0 } }).catch(() => null),
   ]);
 
-  const fallback = detailedFallbackBlogs[params.slug] || detailedFallbackBlogs["travel-stories-for-now-and-the-future"];
+  const fallback =
+    detailedFallbackBlogs[params.slug] ||
+    detailedFallbackBlogs["travel-stories-for-now-and-the-future"];
 
   const post = {
     title: postData?.title || fallback.title,
@@ -161,7 +163,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     paragraph2: fallback.paragraph2,
   };
 
-  // Recent posts for sidebar (excluding current post)
+  // Recent posts for sidebar with distinct images (excluding current post)
   const recentPostsList =
     allLivePosts && allLivePosts.length > 0
       ? allLivePosts
@@ -183,7 +185,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
             url: `/blog/${s}`,
           }));
 
-  // Related articles for bottom grid
+  // Related articles for bottom grid with distinct images
   const relatedGridItems =
     allLivePosts && allLivePosts.length > 0
       ? allLivePosts
@@ -212,45 +214,45 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
           }));
 
   return (
-    <main className="min-h-screen bg-white">
-      {/* 1. Hero Banner */}
-      <section className="relative min-h-[340px] sm:min-h-[440px] w-full flex items-center justify-center overflow-hidden py-16">
+    <main className="min-h-screen bg-white font-poppins">
+      {/* 1. Large Hero Banner */}
+      <section className="relative min-h-[440px] sm:min-h-[540px] lg:min-h-[600px] w-full flex items-center justify-center overflow-hidden py-24">
         <Image
           src={post.coverImage}
           alt={post.title}
           fill
           priority
-          className="object-cover object-center brightness-90"
+          className="object-cover object-center brightness-90 scale-105"
         />
         <div className="absolute inset-0 bg-black/60 backdrop-blur-[1.5px]" />
 
-        <Container size="content" className="relative z-10 text-center px-4 sm:px-8 max-w-4xl pt-12">
+        <Container size="content" className="relative z-10 text-center px-4 sm:px-8 max-w-4xl pt-16">
           {/* Back button & Category Badge */}
-          <div className="flex items-center justify-center gap-3 mb-4 flex-wrap">
+          <div className="flex items-center justify-center gap-3 mb-5 flex-wrap">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1.5 text-xs text-white/90 hover:text-white transition-colors bg-white/15 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 hover:bg-white/25"
+              className="inline-flex items-center gap-2 text-xs sm:text-sm text-white/95 hover:text-white transition-all bg-white/15 backdrop-blur-md px-5 py-2 rounded-full border border-white/25 hover:bg-white/25 shadow-lg"
             >
-              <ArrowLeft className="w-3.5 h-3.5" />
+              <ArrowLeft className="w-4 h-4" />
               <span>Back to All Articles</span>
             </Link>
-            <span className="bg-orange-500 text-white text-xs font-semibold px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md">
+            <span className="bg-orange-500 text-white text-xs sm:text-sm font-semibold px-4 py-2 rounded-full uppercase tracking-wider shadow-lg">
               {post.category}
             </span>
           </div>
 
-          <h1 className="font-poppins font-bold text-2xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-tight drop-shadow-md">
+          <h1 className="font-poppins font-bold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-tight drop-shadow-2xl">
             {post.title}
           </h1>
 
           {/* Meta Bar */}
-          <div className="flex items-center justify-center gap-6 mt-6 text-xs sm:text-sm text-white/95 font-medium">
-            <span className="flex items-center gap-2">
-              <User className="w-4 h-4 text-orange-400" />
+          <div className="flex items-center justify-center gap-8 mt-7 text-xs sm:text-base text-white/95 font-medium">
+            <span className="flex items-center gap-2.5">
+              <User className="w-4 h-4 sm:w-5 sm:h-5 text-orange-400" />
               <span>By {post.author}</span>
             </span>
-            <span className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-orange-400" />
+            <span className="flex items-center gap-2.5">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-orange-400" />
               <span>{post.publishedDate}</span>
             </span>
           </div>
@@ -258,14 +260,14 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
       </section>
 
       {/* 2. Main Article Body & Sidebar */}
-      <section className="py-16 sm:py-24 bg-white">
+      <section className="py-20 sm:py-28 bg-white">
         <Container size="content" className="px-4 sm:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             {/* Left Column: Article Body & Comment Form (8 cols) */}
-            <div className="lg:col-span-8 space-y-12">
-              <article className="space-y-8 font-poppins">
+            <div className="lg:col-span-8 space-y-14">
+              <article className="space-y-9 font-poppins">
                 {/* Main Featured Image */}
-                <div className="relative h-[340px] sm:h-[480px] w-full rounded-2xl overflow-hidden shadow-md">
+                <div className="relative h-[380px] sm:h-[520px] w-full rounded-3xl overflow-hidden shadow-lg border border-gray-100">
                   <Image
                     src={post.featuredImage}
                     alt={post.title}
@@ -276,7 +278,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 </div>
 
                 {/* Excerpt / Intro Paragraph */}
-                <p className="text-base sm:text-lg text-black font-medium leading-relaxed">
+                <p className="text-lg sm:text-xl text-black font-semibold leading-relaxed">
                   {post.intro}
                 </p>
 
@@ -294,7 +296,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 </p>
 
                 {/* Middle Supporting Image */}
-                <div className="relative h-[300px] sm:h-[420px] w-full rounded-2xl overflow-hidden shadow-sm">
+                <div className="relative h-[320px] sm:h-[440px] w-full rounded-3xl overflow-hidden shadow-md border border-gray-100">
                   <Image
                     src={post.middleImage}
                     alt="Supporting Travel Experience"
@@ -308,10 +310,10 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 </p>
 
                 {/* Tags & Social Share Bar */}
-                <div className="pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="pt-9 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   {/* Tags */}
-                  <div className="flex items-center gap-2 text-xs sm:text-sm text-[#6c6c6c] flex-wrap">
-                    <span className="font-semibold text-black flex items-center gap-1.5">
+                  <div className="flex items-center gap-2.5 text-xs sm:text-sm text-[#6c6c6c] flex-wrap">
+                    <span className="font-bold text-black flex items-center gap-1.5">
                       <Tag className="w-4 h-4 text-orange-500" />
                       Tags:
                     </span>
@@ -319,7 +321,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                       <Link
                         key={tag}
                         href={`/blog?category=${encodeURIComponent(tag)}`}
-                        className="bg-gray-100 hover:bg-black hover:text-white transition-colors px-3 py-1 rounded-full text-xs font-medium text-black"
+                        className="bg-gray-100 hover:bg-black hover:text-white transition-colors px-4 py-1.5 rounded-full text-xs font-semibold text-black"
                       >
                         {tag}
                       </Link>
@@ -328,15 +330,15 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
 
                   {/* Share This */}
                   <div className="flex items-center gap-3 text-xs sm:text-sm text-[#6c6c6c]">
-                    <span className="font-semibold text-black">Share:</span>
+                    <span className="font-bold text-black">Share:</span>
                     <div className="flex items-center gap-2">
-                      <button aria-label="Share on Facebook" className="w-8 h-8 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all hover:scale-105">
+                      <button aria-label="Share on Facebook" className="w-9 h-9 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all hover:scale-105 shadow-sm">
                         <Facebook className="w-4 h-4" />
                       </button>
-                      <button aria-label="Share on Twitter" className="w-8 h-8 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all hover:scale-105">
+                      <button aria-label="Share on Twitter" className="w-9 h-9 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all hover:scale-105 shadow-sm">
                         <Twitter className="w-4 h-4" />
                       </button>
-                      <button aria-label="Share on LinkedIn" className="w-8 h-8 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all hover:scale-105">
+                      <button aria-label="Share on LinkedIn" className="w-9 h-9 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all hover:scale-105 shadow-sm">
                         <Linkedin className="w-4 h-4" />
                       </button>
                     </div>
