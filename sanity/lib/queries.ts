@@ -138,7 +138,7 @@ export const destinationsQuery = groq`*[_type == "destination"] | order(_created
   rating,
   booking_cta_label,
   booking_cta_url
-}
+}`;
 
 export const singleDestinationQuery = groq`*[_type == "destination" && (slug.current == $slug || _id == $slug)][0] {
   _id,
