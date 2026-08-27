@@ -353,8 +353,8 @@ export async function getGlobalSettings(): Promise<GlobalSettings> {
             ...globalSettingsFixture.header.logo,
             src: sanitySettings.headerLogo || globalSettingsFixture.header.logo.src,
             textLogo: {
-              brand: sanitySettings.siteName || globalSettingsFixture.header.logo.textLogo.brand,
-              tagline: sanitySettings.siteTagline || globalSettingsFixture.header.logo.textLogo.tagline,
+              brand: sanitySettings.siteName || globalSettingsFixture.header.logo.textLogo?.brand || "REBEL ROVER",
+              tagline: sanitySettings.siteTagline || globalSettingsFixture.header.logo.textLogo?.tagline || "HAS A NICE RING TO IT, COMBINING THE ADVENTUROUS SPIRIT OF A REBEL",
             },
           },
           navLinks:
@@ -379,8 +379,8 @@ export async function getGlobalSettings(): Promise<GlobalSettings> {
             ...globalSettingsFixture.footer.logo,
             src: sanitySettings.footerLogo || sanitySettings.headerLogo || globalSettingsFixture.footer.logo.src,
             textLogo: {
-              brand: sanitySettings.siteName || globalSettingsFixture.footer.logo.textLogo.brand,
-              tagline: sanitySettings.siteTagline || globalSettingsFixture.footer.logo.textLogo.tagline,
+              brand: sanitySettings.siteName || globalSettingsFixture.footer.logo.textLogo?.brand || "REBEL ROVER",
+              tagline: sanitySettings.siteTagline || globalSettingsFixture.footer.logo.textLogo?.tagline || "HAS A NICE RING TO IT, COMBINING THE ADVENTUROUS SPIRIT OF A REBEL",
             },
           },
           blurb_text: sanitySettings.blurbText || globalSettingsFixture.footer.blurb_text,
