@@ -16,7 +16,7 @@ export const homePageFixture: Page = {
         title: "Make in\nyour journey.",
         subtitle: "Explore the world with what you love beautiful natural beauty.",
         popular_places: "Popular Place : Bali, Istanbul, Rome, Paris.",
-        background_image: "/images/home-banner.png",
+        background_image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=2000&auto=format&fit=crop&q=90",
         foreground_image: "",
         search_defaults: {
           location_placeholder: "Location",

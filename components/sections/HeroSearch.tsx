@@ -63,23 +63,28 @@ export function HeroSearch({ fields }: HeroSearchProps) {
     window.location.href = `/packages?${query.toString()}`;
   };
 
-  const bgImage = fields?.background_image || "/images/home-banner.png";
+  const bgImage =
+    fields?.background_image && fields.background_image !== "/images/home-banner.png"
+      ? fields.background_image
+      : "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=2000&auto=format&fit=crop&q=90";
   const title = fields?.title || "Make in\nyour journey.";
   const subtitle = fields?.subtitle || "Explore the world with what you love beautiful natural beauty.";
   const popularPlaces = fields?.popular_places || "Popular Place : Bali, Istanbul, Rome, Paris.";
   const ctaLabel = fields?.cta_label || "Explore now";
 
   return (
-    <section className="relative min-h-screen lg:min-h-[960px] w-full flex items-center pt-32 sm:pt-40 pb-20 overflow-visible bg-[#0c223c]">
-      {/* 1. Full-Bleed Banner Artwork */}
+    <section className="relative min-h-screen lg:min-h-[960px] w-full flex items-center pt-32 sm:pt-40 pb-20 overflow-visible bg-slate-900">
+      {/* 1. Full-Bleed Bright Tropical Banner Artwork */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
           src={bgImage}
           alt="Make in your journey banner"
           fill
           priority
-          className="object-cover object-bottom"
+          className="object-cover object-center scale-105"
         />
+        {/* Soft elegant gradient scrim to ensure high text contrast while keeping image bright */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
       </div>
 
       <Container size="content" className="relative z-10 w-full px-4 sm:px-8">
