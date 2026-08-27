@@ -29,7 +29,7 @@ interface RowRendererProps {
 export function RowRenderer({ rows }: RowRendererProps) {
   return (
     <div className="w-full flex flex-col">
-      {rows.map((row) => {
+      {rows.map((row: any) => {
         switch (row.type) {
           case "hero_search":
             return <HeroSearch key={row.id} fields={row.fields} />;

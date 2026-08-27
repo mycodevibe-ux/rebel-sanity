@@ -314,6 +314,8 @@ export type StatsCountersRow = BaseRow<"stats_counters", StatsCountersFields>;
 export type GalleryRow = BaseRow<"gallery", GalleryFields>;
 export type FounderQuoteRow = BaseRow<"founder_quote", FounderQuoteFields>;
 export type FeatureBlocksRow = BaseRow<"feature_blocks", FeatureBlocksFields>;
+export type AirplaneBannerRow = BaseRow<"airplane_banner", Record<string, any>>;
+export type PackageTipsArticleRow = BaseRow<"package_tips_article", Record<string, any>>;
 
 export type Row =
   | HeroSearchRow
@@ -334,7 +336,9 @@ export type Row =
   | StatsCountersRow
   | GalleryRow
   | FounderQuoteRow
-  | FeatureBlocksRow;
+  | FeatureBlocksRow
+  | AirplaneBannerRow
+  | PackageTipsArticleRow;
 
 // -------------------------------------------------------------
 // Page & Global Layout Types
