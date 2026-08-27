@@ -12,27 +12,27 @@ export const metadata: Metadata = {
   description: "Explore world-class travel stories, destination guides, eco-travel tips, and vacation advice with Rebel Rover.",
 };
 
-const defaultBlogPosts = [
+export const defaultBlogPosts = [
   {
     id: "blog-1",
     title: "Travel Stories For Now and the Future",
     slug: "travel-stories-for-now-and-the-future",
-    category: "Stories, Tips",
+    category: "Stories",
     author: "Hasmar",
-    publishedDate: "January 18, 2021",
-    coverImage: "/images/blog-banner.png",
-    excerpt: "Discover inspiring stories of sustainable exploration, secret destinations, and timeless memories.",
-    tags: ["Destination", "Travel"],
+    publishedDate: "January 18, 2024",
+    coverImage: "/images/blog-post-1.png",
+    excerpt: "Discover inspiring stories of sustainable exploration, secret destinations, and timeless memories around the world.",
+    tags: ["Destination", "Stories"],
   },
   {
     id: "blog-2",
     title: "9 Popular Travel Destinations on Sale in 2024",
     slug: "9-popular-travel-destinations-on-sale",
     category: "Travel Deals",
-    author: "Admin",
+    author: "David Miller",
     publishedDate: "14 Dec 2023",
-    coverImage: "/images/home-img-1.png",
-    excerpt: "Check out the best discounts and budget-friendly vacation packages across Asia and Europe.",
+    coverImage: "/images/paris.png",
+    excerpt: "Check out the best discounts and budget-friendly vacation packages across Asia and Europe this season.",
     tags: ["Deals", "Packages"],
   },
   {
@@ -40,22 +40,44 @@ const defaultBlogPosts = [
     title: "How Are We Going to Travel Sustainably in 2024?",
     slug: "how-are-we-going-to-travel",
     category: "Eco Travel",
-    author: "Admin",
+    author: "Siti Sarah",
     publishedDate: "10 Nov 2023",
-    coverImage: "/images/home-img-3.png",
-    excerpt: "Eco-friendly travel tips and how to minimize your carbon footprint while seeing the world.",
-    tags: ["Eco", "Future"],
+    coverImage: "/images/bali.png",
+    excerpt: "Eco-friendly travel tips and practical ways to minimize your carbon footprint while seeing the world.",
+    tags: ["Eco", "Tips"],
   },
   {
     id: "blog-4",
     title: "Top 10 Hidden Gems in South East Asia You Must Visit",
     slug: "top-10-hidden-gems-asia",
     category: "Adventure",
-    author: "Sarah",
+    author: "Cristian Daniel",
     publishedDate: "05 Oct 2023",
-    coverImage: "/images/bali.png",
-    excerpt: "From untouched islands to misty mountain temples, explore the best secret spots.",
-    tags: ["Asia", "Guide"],
+    coverImage: "/images/italy.png",
+    excerpt: "From untouched tropical islands to misty mountain temples, explore the best secret spots.",
+    tags: ["Asia", "Adventure"],
+  },
+  {
+    id: "blog-5",
+    title: "The Ultimate Travel Packing Guide for World Explorers",
+    slug: "essential-travel-packing-guide",
+    category: "Tips",
+    author: "Sara Jay",
+    publishedDate: "22 Sep 2023",
+    coverImage: "/images/home-img-2.png",
+    excerpt: "Master the art of light packing with our essential checklist for hassle-free adventures across continents.",
+    tags: ["Tips", "Guide"],
+  },
+  {
+    id: "blog-6",
+    title: "Exotic Island Escapes You Need on Your Bucket List",
+    slug: "exotic-island-escapes",
+    category: "Destination",
+    author: "Kausar Hasan",
+    publishedDate: "15 Aug 2023",
+    coverImage: "/images/dubai.png",
+    excerpt: "Crystal-clear turquoise waters, white sand beaches, and serene tropical paradises waiting to be discovered.",
+    tags: ["Destination", "Beaches"],
   },
 ];
 
@@ -78,27 +100,34 @@ interface BlogPageProps {
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const selectedCategory = searchParams?.category || "All";
 
-  const livePosts = await client.fetch(blogPostsQuery, {}, { next: { revalidate: 0 } }).catch(() => null);
+  const livePosts = await client
+    .fetch(blogPostsQuery, {}, { next: { revalidate: 0 } })
+    .catch(() => null);
 
   const rawPosts = livePosts && livePosts.length > 0 ? livePosts : defaultBlogPosts;
 
-  const allPosts = rawPosts.map((p: any, idx: number) => ({
-    id: p._id || p.id || `post-${idx}`,
-    title: p.title || "Travel Story",
-    slug: typeof p.slug === "string" ? p.slug : p.slug?.current || `travel-stories-for-now-and-the-future`,
-    category: p.category || "Travel",
-    author: p.author || "Admin",
-    publishedDate: p.publishedDate || "Recent",
-    coverImage: p.coverImage || "/images/home-img-1.png",
-    excerpt: p.excerpt || "Read inspiring travel stories and destination tips on Rebel Rover.",
-  }));
+  const allPosts = rawPosts.map((p: any, idx: number) => {
+    // Map fallback image if live post image is missing
+    const fallbackImage = defaultBlogPosts[idx % defaultBlogPosts.length].coverImage;
+    return {
+      id: p._id || p.id || `post-${idx}`,
+      title: p.title || "Travel Story",
+      slug: typeof p.slug === "string" ? p.slug : p.slug?.current || `travel-stories-for-now-and-the-future`,
+      category: p.category || "Travel",
+      author: p.author || "Admin",
+      publishedDate: p.publishedDate || "Recent",
+      coverImage: p.coverImage || fallbackImage,
+      excerpt: p.excerpt || "Read inspiring travel stories and destination tips on Rebel Rover.",
+    };
+  });
 
   // Filter by category if selected
-  const filteredPosts = selectedCategory === "All"
-    ? allPosts
-    : allPosts.filter((post: any) =>
-        post.category.toLowerCase().includes(selectedCategory.toLowerCase())
-      );
+  const filteredPosts =
+    selectedCategory === "All"
+      ? allPosts
+      : allPosts.filter((post: any) =>
+          post.category.toLowerCase().includes(selectedCategory.toLowerCase())
+        );
 
   return (
     <main className="min-h-screen bg-white font-poppins">
@@ -127,7 +156,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       </section>
 
       {/* 2. Category Filter Bar */}
-      <section className="py-8 bg-gray-50 border-b border-gray-100">
+      <section className="py-8 bg-gray-50 border-b border-gray-100 sticky top-[72px] z-20 backdrop-blur-md bg-white/90">
         <Container size="content" className="px-4 sm:px-8">
           <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none justify-start md:justify-center">
             {categoryList.map((cat) => {
@@ -164,22 +193,22 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               {filteredPosts.map((post: any) => (
                 <article
                   key={post.id}
-                  className="bg-white rounded-2xl border border-gray-100/90 shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.1)] overflow-hidden transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1.5"
+                  className="bg-white rounded-2xl border border-gray-100/90 shadow-[0_10px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)] overflow-hidden transition-all duration-300 flex flex-col justify-between group hover:-translate-y-2"
                 >
                   <div>
-                    {/* Thumbnail with Category Pill Badge */}
-                    <div className="relative h-60 w-full overflow-hidden">
+                    {/* Thumbnail with Category Pill Badge - Full Clickable Link */}
+                    <Link href={`/blog/${post.slug}`} className="block relative h-60 w-full overflow-hidden">
                       <Image
                         src={post.coverImage}
                         alt={post.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                       />
-                      <div className="absolute top-4 left-4 bg-black/80 backdrop-blur-md text-white text-xs font-medium px-3.5 py-1 rounded-full flex items-center gap-1.5 shadow-md">
+                      <div className="absolute top-4 left-4 bg-black/85 backdrop-blur-md text-white text-xs font-medium px-3.5 py-1 rounded-full flex items-center gap-1.5 shadow-md z-10">
                         <Tag className="w-3 h-3 text-orange-400" />
                         <span>{post.category}</span>
                       </div>
-                    </div>
+                    </Link>
 
                     {/* Content */}
                     <div className="p-6 sm:p-7 space-y-3">
@@ -210,13 +239,13 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   </div>
 
                   {/* Read More Action Button */}
-                  <div className="px-6 pb-6 sm:px-7 sm:pb-7 pt-0 border-t border-gray-50 pt-4 flex items-center justify-between">
+                  <div className="px-6 pb-6 sm:px-7 sm:pb-7 pt-4 border-t border-gray-50 flex items-center justify-between">
                     <Link
                       href={`/blog/${post.slug}`}
                       className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-black group-hover:text-orange-600 transition-colors"
                     >
-                      <span>Read Article</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+                      <span>Read Full Article</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform text-orange-500" />
                     </Link>
                   </div>
                 </article>

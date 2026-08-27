@@ -19,61 +19,122 @@ interface BlogDetailProps {
   };
 }
 
-const fallbackBlogs: Record<string, any> = {
+const detailedFallbackBlogs: Record<string, any> = {
   "travel-stories-for-now-and-the-future": {
     title: "Travel Stories For Now and the Future",
     author: "Hasmar",
-    publishedDate: "January 18, 2021",
-    category: "Stories, Tips",
+    publishedDate: "January 18, 2024",
+    category: "Stories",
     coverImage: "/images/blog-banner.png",
     featuredImage: "/images/blog-post-1.png",
     middleImage: "/images/blog-post-2.png",
-    tags: ["Destination", "Travel"],
-    excerpt: "Discover inspiring stories of sustainable exploration, secret destinations, and timeless memories.",
+    tags: ["Destination", "Stories"],
+    intro:
+      "Travel is more than just crossing borders; it is about rediscovering our connection with the world, understanding varied cultures, and creating timeless memories that remain with us forever.",
+    heading1: "Rice Terraces & Untouched Landscapes",
+    paragraph1:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+    paragraph2:
+      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Traveling responsibly allows future generations to witness the exotic sceneries we cherish today.",
   },
   "9-popular-travel-destinations-on-sale": {
     title: "9 Popular Travel Destinations on Sale in 2024",
-    author: "Admin",
+    author: "David Miller",
     publishedDate: "14 Dec 2023",
     category: "Travel Deals",
-    coverImage: "/images/home-img-1.png",
-    featuredImage: "/images/home-img-1.png",
-    middleImage: "/images/home-img-2.png",
+    coverImage: "/images/paris.png",
+    featuredImage: "/images/paris.png",
+    middleImage: "/images/dubai.png",
     tags: ["Deals", "Packages"],
-    excerpt: "Check out the best discounts and budget-friendly vacation packages across Asia and Europe.",
+    intro:
+      "Looking for your next dream getaway without breaking the bank? We have curated the top 9 most sought-after destinations offering seasonal discounts and all-inclusive packages.",
+    heading1: "From European Capitals to Middle Eastern Wonders",
+    paragraph1:
+      "Whether you are wandering through the romantic cobblestone streets of Paris or admiring the futuristic skyline of Dubai, budget-friendly luxury travel is more accessible in 2024 than ever before.",
+    paragraph2:
+      "Booking early and taking advantage of customized tour itineraries guarantees optimal flight deals, five-star handpicked hotel stays, and authentic cultural tours guided by certified experts.",
   },
   "how-are-we-going-to-travel": {
     title: "How Are We Going to Travel Sustainably in 2024?",
-    author: "Admin",
+    author: "Siti Sarah",
     publishedDate: "10 Nov 2023",
     category: "Eco Travel",
-    coverImage: "/images/home-img-3.png",
-    featuredImage: "/images/home-img-3.png",
-    middleImage: "/images/home-img-1.png",
-    tags: ["Eco", "Future"],
-    excerpt: "Eco-friendly travel tips and how to minimize your carbon footprint while seeing the world.",
+    coverImage: "/images/bali.png",
+    featuredImage: "/images/bali.png",
+    middleImage: "/images/home-img-3.png",
+    tags: ["Eco", "Tips"],
+    intro:
+      "Sustainable tourism is shaping the future of global exploration. Discover how conscious travelers are minimizing environmental footprints while actively supporting local communities.",
+    heading1: "Embracing Low-Impact & Eco-Friendly Adventures",
+    paragraph1:
+      "Choosing eco-certified lodges, eliminating single-use plastics, and participating in community-led conservation tours help preserve delicate marine ecosystems and sacred mountain reserves.",
+    paragraph2:
+      "By traveling mindfully and respecting cultural traditions, we turn every journey into a positive force for social and ecological preservation across global destinations.",
   },
   "top-10-hidden-gems-asia": {
     title: "Top 10 Hidden Gems in South East Asia You Must Visit",
-    author: "Sarah",
+    author: "Cristian Daniel",
     publishedDate: "05 Oct 2023",
     category: "Adventure",
-    coverImage: "/images/bali.png",
-    featuredImage: "/images/bali.png",
-    middleImage: "/images/italy.png",
-    tags: ["Asia", "Guide"],
-    excerpt: "From untouched islands to misty mountain temples, explore the best secret spots.",
+    coverImage: "/images/italy.png",
+    featuredImage: "/images/italy.png",
+    middleImage: "/images/home-img-1.png",
+    tags: ["Asia", "Adventure"],
+    intro:
+      "Venture off the beaten path and explore secluded islands, ancient cliff temples, and serene rainforest sanctuaries hidden deep within Southeast Asia.",
+    heading1: "Secret Waterfalls & Untamed Archipelago Trails",
+    paragraph1:
+      "Far from crowded tourist corridors lie pristine turquoise lagoons, remote limestone karsts, and emerald rice valleys preserved in authentic natural splendor.",
+    paragraph2:
+      "Local homestays and guided trek expeditions provide rare glimpses into traditional folklore, exotic culinary heritage, and unspoiled wilderness.",
+  },
+  "essential-travel-packing-guide": {
+    title: "The Ultimate Travel Packing Guide for World Explorers",
+    author: "Sara Jay",
+    publishedDate: "22 Sep 2023",
+    category: "Tips",
+    coverImage: "/images/home-img-2.png",
+    featuredImage: "/images/home-img-2.png",
+    middleImage: "/images/aboutbg.png",
+    tags: ["Tips", "Guide"],
+    intro:
+      "Smart packing is the foundation of every stress-free journey. Master the art of minimalist, versatile travel gear tailored for any climate or adventure.",
+    heading1: "Pack Light, Travel Far: The Essential Checklist",
+    paragraph1:
+      "From breathable merino wool layers to universal power adapters and waterproof organizers, selecting multifunctional gear maximizes comfort and saves baggage fees.",
+    paragraph2:
+      "Always leave room in your luggage for unique handcrafted souvenirs and keepsakes gathered from local bazaars and artisan markets.",
+  },
+  "exotic-island-escapes": {
+    title: "Exotic Island Escapes You Need on Your Bucket List",
+    author: "Kausar Hasan",
+    publishedDate: "15 Aug 2023",
+    category: "Destination",
+    coverImage: "/images/dubai.png",
+    featuredImage: "/images/dubai.png",
+    middleImage: "/images/bali.png",
+    tags: ["Destination", "Beaches"],
+    intro:
+      "Trade everyday noise for the gentle rhythm of ocean tides. Discover serene tropical havens boasting coral reefs, private overwater villas, and golden sunsets.",
+    heading1: "Crystal Waters & Golden Horizon Retreats",
+    paragraph1:
+      "Whether sailing across the Indonesian archipelago or relaxing on secluded Mediterranean shores, island getaways provide unmatched rejuvenation for mind and spirit.",
+    paragraph2:
+      "Indulge in freshly caught seafood feasts, world-class scuba diving, and unforgettable sunset catamaran cruises beneath starlit skies.",
   },
 };
 
 export async function generateMetadata({ params }: BlogDetailProps): Promise<Metadata> {
-  const post = await client.fetch(singleBlogPostQuery, { slug: params.slug }, { next: { revalidate: 0 } }).catch(() => null);
-  const fallback = fallbackBlogs[params.slug];
+  const post = await client
+    .fetch(singleBlogPostQuery, { slug: params.slug }, { next: { revalidate: 0 } })
+    .catch(() => null);
+
+  const fallback = detailedFallbackBlogs[params.slug];
   const postTitle = post?.title || fallback?.title || "Blog Article";
 
   return {
     title: `${postTitle} — Rebel Rover Blog`,
-    description: post?.excerpt || fallback?.excerpt || "Read this article on Rebel Rover.",
+    description: post?.excerpt || fallback?.intro || "Read this article on Rebel Rover.",
   };
 }
 
@@ -83,11 +144,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     client.fetch(blogPostsQuery, {}, { next: { revalidate: 0 } }).catch(() => null),
   ]);
 
-  const fallback = fallbackBlogs[params.slug];
-
-  if (!postData && !fallback) {
-    notFound();
-  }
+  const fallback = detailedFallbackBlogs[params.slug] || detailedFallbackBlogs["travel-stories-for-now-and-the-future"];
 
   const post = {
     title: postData?.title || fallback.title,
@@ -96,58 +153,68 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     category: postData?.category || fallback.category || "Stories",
     coverImage: postData?.coverImage || fallback.coverImage || "/images/blog-banner.png",
     featuredImage: postData?.coverImage || fallback.featuredImage || "/images/blog-post-1.png",
-    middleImage: fallback?.middleImage || "/images/blog-post-2.png",
+    middleImage: fallback.middleImage || "/images/blog-post-2.png",
     tags: postData?.tags || fallback.tags || ["Travel", "Destination"],
-    body: postData?.body,
-    excerpt: postData?.excerpt || fallback.excerpt,
+    intro: postData?.excerpt || fallback.intro,
+    heading1: fallback.heading1,
+    paragraph1: fallback.paragraph1,
+    paragraph2: fallback.paragraph2,
   };
 
   // Recent posts for sidebar (excluding current post)
-  const recentPostsList = allLivePosts && allLivePosts.length > 0
-    ? allLivePosts.filter((p: any) => p.slug !== params.slug).slice(0, 3).map((p: any) => ({
-        thumbnail: p.coverImage || "/images/home-img-2.png",
-        title: p.title,
-        date: p.publishedDate || "Recent",
-        url: `/blog/${p.slug}`,
-      }))
-    : Object.keys(fallbackBlogs)
-        .filter((s) => s !== params.slug)
-        .slice(0, 3)
-        .map((s) => ({
-          thumbnail: fallbackBlogs[s].featuredImage,
-          title: fallbackBlogs[s].title,
-          date: fallbackBlogs[s].publishedDate,
-          url: `/blog/${s}`,
-        }));
+  const recentPostsList =
+    allLivePosts && allLivePosts.length > 0
+      ? allLivePosts
+          .filter((p: any) => p.slug !== params.slug)
+          .slice(0, 3)
+          .map((p: any) => ({
+            thumbnail: p.coverImage || "/images/home-img-2.png",
+            title: p.title,
+            date: p.publishedDate || "Recent",
+            url: `/blog/${p.slug}`,
+          }))
+      : Object.keys(detailedFallbackBlogs)
+          .filter((s) => s !== params.slug)
+          .slice(0, 3)
+          .map((s) => ({
+            thumbnail: detailedFallbackBlogs[s].featuredImage,
+            title: detailedFallbackBlogs[s].title,
+            date: detailedFallbackBlogs[s].publishedDate,
+            url: `/blog/${s}`,
+          }));
 
   // Related articles for bottom grid
-  const relatedGridItems = allLivePosts && allLivePosts.length > 0
-    ? allLivePosts.filter((p: any) => p.slug !== params.slug).slice(0, 3).map((p: any) => ({
-        id: p._id,
-        image: p.coverImage || "/images/home-img-1.png",
-        category_label: p.category || "Travel",
-        title: p.title,
-        excerpt: p.excerpt || "Explore world-class travel stories and curated experiences.",
-        published_date: p.publishedDate || "Recent",
-        read_more_url: `/blog/${p.slug}`,
-      }))
-    : Object.keys(fallbackBlogs)
-        .filter((s) => s !== params.slug)
-        .slice(0, 3)
-        .map((s) => ({
-          id: s,
-          image: fallbackBlogs[s].featuredImage,
-          category_label: fallbackBlogs[s].category,
-          title: fallbackBlogs[s].title,
-          excerpt: fallbackBlogs[s].excerpt,
-          published_date: fallbackBlogs[s].publishedDate,
-          read_more_url: `/blog/${s}`,
-        }));
+  const relatedGridItems =
+    allLivePosts && allLivePosts.length > 0
+      ? allLivePosts
+          .filter((p: any) => p.slug !== params.slug)
+          .slice(0, 3)
+          .map((p: any) => ({
+            id: p._id,
+            image: p.coverImage || "/images/home-img-1.png",
+            category_label: p.category || "Travel",
+            title: p.title,
+            excerpt: p.excerpt || "Explore world-class travel stories and curated experiences.",
+            published_date: p.publishedDate || "Recent",
+            read_more_url: `/blog/${p.slug}`,
+          }))
+      : Object.keys(detailedFallbackBlogs)
+          .filter((s) => s !== params.slug)
+          .slice(0, 3)
+          .map((s) => ({
+            id: s,
+            image: detailedFallbackBlogs[s].featuredImage,
+            category_label: detailedFallbackBlogs[s].category,
+            title: detailedFallbackBlogs[s].title,
+            excerpt: detailedFallbackBlogs[s].intro,
+            published_date: detailedFallbackBlogs[s].publishedDate,
+            read_more_url: `/blog/${s}`,
+          }));
 
   return (
     <main className="min-h-screen bg-white">
       {/* 1. Hero Banner */}
-      <section className="relative min-h-[340px] sm:min-h-[420px] w-full flex items-center justify-center overflow-hidden py-16">
+      <section className="relative min-h-[340px] sm:min-h-[440px] w-full flex items-center justify-center overflow-hidden py-16">
         <Image
           src={post.coverImage}
           alt={post.title}
@@ -158,16 +225,16 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
         <div className="absolute inset-0 bg-black/60 backdrop-blur-[1.5px]" />
 
         <Container size="content" className="relative z-10 text-center px-4 sm:px-8 max-w-4xl pt-12">
-          {/* Breadcrumb & Category Badge */}
+          {/* Back button & Category Badge */}
           <div className="flex items-center justify-center gap-3 mb-4 flex-wrap">
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1.5 text-xs text-white/80 hover:text-white transition-colors bg-white/10 backdrop-blur-md px-3.5 py-1 rounded-full border border-white/15"
+              className="inline-flex items-center gap-1.5 text-xs text-white/90 hover:text-white transition-colors bg-white/15 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 hover:bg-white/25"
             >
-              <ArrowLeft className="w-3 h-3" />
-              <span>Back to All Blogs</span>
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to All Articles</span>
             </Link>
-            <span className="bg-orange-500/90 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+            <span className="bg-orange-500 text-white text-xs font-semibold px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md">
               {post.category}
             </span>
           </div>
@@ -177,7 +244,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
           </h1>
 
           {/* Meta Bar */}
-          <div className="flex items-center justify-center gap-6 mt-6 text-xs sm:text-sm text-white/90 font-medium">
+          <div className="flex items-center justify-center gap-6 mt-6 text-xs sm:text-sm text-white/95 font-medium">
             <span className="flex items-center gap-2">
               <User className="w-4 h-4 text-orange-400" />
               <span>By {post.author}</span>
@@ -198,7 +265,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
             <div className="lg:col-span-8 space-y-12">
               <article className="space-y-8 font-poppins">
                 {/* Main Featured Image */}
-                <div className="relative h-[340px] sm:h-[460px] w-full rounded-2xl overflow-hidden shadow-sm">
+                <div className="relative h-[340px] sm:h-[480px] w-full rounded-2xl overflow-hidden shadow-md">
                   <Image
                     src={post.featuredImage}
                     alt={post.title}
@@ -209,34 +276,34 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 </div>
 
                 {/* Excerpt / Intro Paragraph */}
-                <p className="text-sm sm:text-base text-[#555555] leading-relaxed font-normal">
-                  {post.excerpt}
+                <p className="text-base sm:text-lg text-black font-medium leading-relaxed">
+                  {post.intro}
                 </p>
 
-                <p className="text-sm sm:text-base text-[#6c6c6c] leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                <p className="text-sm sm:text-base text-[#666666] leading-relaxed">
+                  {post.paragraph1}
                 </p>
 
                 {/* Section Subheading */}
                 <h2 className="font-poppins font-bold text-2xl sm:text-3xl text-black pt-4">
-                  Discovering the Untouched Beauty
+                  {post.heading1}
                 </h2>
 
-                <p className="text-sm sm:text-base text-[#6c6c6c] leading-relaxed">
-                  Mauris tempor tellus ante, ut fermentum erat gravida vel. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean nec justo dui. Ut et consequat dui, a malesuada ipsum. Pellentesque nec turpis viverra, blandit mi a, accumsan justo.
+                <p className="text-sm sm:text-base text-[#666666] leading-relaxed">
+                  {post.paragraph2}
                 </p>
 
                 {/* Middle Supporting Image */}
-                <div className="relative h-[300px] sm:h-[400px] w-full rounded-2xl overflow-hidden shadow-sm">
+                <div className="relative h-[300px] sm:h-[420px] w-full rounded-2xl overflow-hidden shadow-sm">
                   <Image
                     src={post.middleImage}
-                    alt="Scenic Travel View"
+                    alt="Supporting Travel Experience"
                     fill
                     className="object-cover object-center"
                   />
                 </div>
 
-                <p className="text-sm sm:text-base text-[#6c6c6c] leading-relaxed">
+                <p className="text-sm sm:text-base text-[#666666] leading-relaxed">
                   Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula.
                 </p>
 
@@ -299,6 +366,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                     { label: "Travel Deals", url: "/blog?category=Travel+Deals" },
                     { label: "Eco Travel", url: "/blog?category=Eco+Travel" },
                     { label: "Adventure", url: "/blog?category=Adventure" },
+                    { label: "Destination", url: "/blog?category=Destination" },
                   ],
                 }}
               />
