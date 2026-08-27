@@ -103,7 +103,7 @@ export function ServiceGrid({ fields }: ServiceGridProps) {
       {/* High-Resolution Blue Ocean Coastline Banner Background Artwork */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/why-choose-us.png"
+          src="/images/why-choose.png"
           alt="Why choose us background"
           fill
           priority
