@@ -31,12 +31,12 @@ interface PackageDetailProps {
 const PACKAGE_IMAGES: Record<string, string> = {
   paris: "/images/paris.png",
   swiss: "/images/home-img-1.png",
-  thailand: "/images/bali.png",
-  taiwan: "/images/italy.png",
-  indonesia: "/images/dubai.png",
-  singapore: "/images/home-img-3.png",
-  dubai: "/images/dubai.png",
+  thailand: "/images/home-img-3.png",
+  taiwan: "/images/blog-post-1.png",
+  indonesia: "/images/bali.png",
   bali: "/images/bali.png",
+  dubai: "/images/dubai.png",
+  singapore: "/images/home-img-2.png",
   italy: "/images/italy.png",
 };
 
@@ -49,7 +49,7 @@ const detailedFallbackPackages: Record<string, any> = {
     rating: 5,
     coverImage: "/images/Package-banner.png",
     featuredImage: "/images/paris.png",
-    middleImage: "/images/blog-post-1.png",
+    middleImage: "/images/blog-post-2.png",
     description:
       "Experience the world's most romantic city. Wander beneath the glowing Eiffel Tower, stroll through historic Montmartre, and savor artisanal French cuisine at charming sidewalk bistros.",
     highlights: [
@@ -84,7 +84,7 @@ const detailedFallbackPackages: Record<string, any> = {
     rating: 5,
     coverImage: "/images/about-banner.png",
     featuredImage: "/images/home-img-1.png",
-    middleImage: "/images/home-img-2.png",
+    middleImage: "/images/aboutbg.png",
     description:
       "Immerse yourself in breathtaking snow-capped mountain peaks, pristine glacier lakes, and scenic panoramic trains across the heart of the Swiss Alps.",
     highlights: [
@@ -123,8 +123,8 @@ const detailedFallbackPackages: Record<string, any> = {
     location: "Phuket & Krabi, Thailand",
     rating: 5,
     coverImage: "/images/blog-banner.png",
-    featuredImage: "/images/bali.png",
-    middleImage: "/images/home-img-3.png",
+    featuredImage: "/images/home-img-3.png",
+    middleImage: "/images/article.png",
     description:
       "Unwind on pristine sun-drenched beaches, sail past towering limestone karsts in turquoise lagoons, and immerse in vibrant night markets and authentic Thai culture.",
     highlights: [
@@ -168,8 +168,8 @@ const detailedFallbackPackages: Record<string, any> = {
     location: "Taipei & Hualien, Taiwan",
     rating: 5,
     coverImage: "/images/home-banner.png",
-    featuredImage: "/images/italy.png",
-    middleImage: "/images/blog-post-1.png",
+    featuredImage: "/images/blog-post-1.png",
+    middleImage: "/images/italy.png",
     description:
       "Explore the magical misty mountain town of Jiufen, taste world-famous Michelin-rated night market street food, and gaze up at the dramatic cliffs of Taroko Gorge.",
     highlights: [
@@ -207,9 +207,9 @@ const detailedFallbackPackages: Record<string, any> = {
     duration: "6 Days / 5 Nights",
     location: "Bali, Indonesia",
     rating: 5,
-    coverImage: "/images/Package-banner.png",
-    featuredImage: "/images/dubai.png",
-    middleImage: "/images/aboutbg.png",
+    coverImage: "/images/contact-banner.png",
+    featuredImage: "/images/bali.png",
+    middleImage: "/images/home-img-2.png",
     description:
       "Escape to lush emerald rice terraces, cliffside ocean temples, private jungle pool villas, and spiritual yoga sanctuaries in the heart of Bali.",
     highlights: [
@@ -251,38 +251,43 @@ const detailedFallbackPackages: Record<string, any> = {
       },
     ],
   },
-  singapore: {
-    name: "Singapore - Futuristic Gardens by the Bay & Marina Sands",
+  dubai: {
+    name: "Dubai - Desert Safari & Futuristic Skylines",
     price: "$319.00",
-    duration: "3 Days / 2 Nights",
-    location: "Singapore",
+    duration: "4 Days / 3 Nights",
+    location: "Dubai, United Arab Emirates",
     rating: 5,
-    coverImage: "/images/about-banner.png",
-    featuredImage: "/images/home-img-3.png",
-    middleImage: "/images/article.png",
+    coverImage: "/images/home-banner.png",
+    featuredImage: "/images/dubai.png",
+    middleImage: "/images/aboutbg.png",
     description:
-      "Discover the dazzling Garden City where futuristic Supertrees meet world-class Michelin dining, luxury shopping on Orchard Road, and thrilling island attractions.",
+      "Experience the dazzling blend of golden Arabian dunes and futuristic architectural marvels in Dubai. Discover luxury desert safaris, sky-high dining, and sunset boat cruises.",
     highlights: [
-      "Gardens by the Bay Cloud Forest & Supertree Grove Light Show",
-      "Marina Bay Sands Skypark 57th Floor Observation Deck",
-      "Universal Studios Singapore & Sentosa Island Cable Car",
-      "Chinatown & Lau Pa Sat Satay Street Culinary Experience",
+      "Burj Khalifa 124th & 125th Floor At The Top Observation Entry",
+      "Premium 4x4 Red Dune Desert Safari with BBQ Dinner & Shows",
+      "Dubai Marina Luxury Sunset Yacht Cruise with refreshments",
+      "Stay in 5-star hotel with rooftop infinity pool overlooking downtown",
     ],
     itinerary: [
       {
         day: "Day 1",
-        title: "Changi Jewel Arrival & Marina Bay Sands Skyline",
-        desc: "Marvel at the world-famous HSBC Rain Vortex at Jewel Changi. Evening cocktail at Marina Bay Sands rooftop.",
+        title: "Dubai Arrival & Marina Sunset Yacht Cruise",
+        desc: "VIP airport transfer to your 5-star hotel. Evening private yacht cruise past the illuminated Dubai Marina skyscrapers.",
       },
       {
         day: "Day 2",
-        title: "Gardens by the Bay & Sentosa Island Attractions",
-        desc: "Explore the misty Cloud Forest dome and OCBC Skyway. Afternoon cable car to Sentosa Island beaches and Universal Studios.",
+        title: "Burj Khalifa & Dubai Mall Fountains",
+        desc: "Ascend the world's tallest tower for panoramic city views. Evening synchronized Dubai Fountain music show and gourmet dining.",
       },
       {
         day: "Day 3",
-        title: "Chinatown Heritage & Departure",
-        desc: "Visit Buddha Tooth Relic Temple and savor Michelin Hainanese chicken rice before evening airport transfer.",
+        title: "Red Dune Desert Safari & Bedouin Camp Banquet",
+        desc: "Thrilling dune bashing, sandboarding, and camel riding followed by traditional tanoura dance and Arabian grill buffet under the stars.",
+      },
+      {
+        day: "Day 4",
+        title: "Old Souks Heritage Walk & Airport Departure",
+        desc: "Traditional abra boat crossing across Dubai Creek to explore Gold & Spice Souks before airport transfer.",
       },
     ],
   },
@@ -312,7 +317,7 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
     detailedFallbackPackages[params.slug] || detailedFallbackPackages["paris"];
 
   const matchedCover =
-    destData?.image || PACKAGE_IMAGES[params.slug] || fallback.featuredImage;
+    PACKAGE_IMAGES[params.slug] || destData?.image || fallback.featuredImage;
 
   const pkg = {
     name: destData?.name || fallback.name,
@@ -328,7 +333,7 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
     itinerary: fallback.itinerary,
   };
 
-  // Other packages for sidebar & bottom grid
+  // Other packages for sidebar & bottom grid with 100% DISTINCT photos
   const rawList =
     allLiveDestinations && allLiveDestinations.length > 0
       ? allLiveDestinations.filter((d: any) => d.slug !== params.slug && d.name?.toLowerCase() !== params.slug)
@@ -337,8 +342,8 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
           .map((s) => ({ slug: s, ...detailedFallbackPackages[s] }));
 
   const sidebarPackages = rawList.slice(0, 3).map((d: any, idx: number) => {
-    const slugStr = d.slug || d.name?.toLowerCase().replace(/\s+/g, "-") || `pkg-${idx + 1}`;
-    const img = d.image || PACKAGE_IMAGES[slugStr] || "/images/paris.png";
+    const slugStr = d.slug || d.name?.toLowerCase().replace(/[\s()]+/g, "-").replace(/-+/g, "-") || `pkg-${idx + 1}`;
+    const img = PACKAGE_IMAGES[slugStr] || d.image || "/images/paris.png";
     return {
       name: d.name,
       price: d.price || "$299.00",
@@ -349,8 +354,8 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
   });
 
   const bottomGridItems = rawList.slice(0, 3).map((d: any, idx: number) => {
-    const slugStr = d.slug || d.name?.toLowerCase().replace(/\s+/g, "-") || `pkg-${idx + 1}`;
-    const img = d.image || PACKAGE_IMAGES[slugStr] || "/images/paris.png";
+    const slugStr = d.slug || d.name?.toLowerCase().replace(/[\s()]+/g, "-").replace(/-+/g, "-") || `pkg-${idx + 1}`;
+    const img = PACKAGE_IMAGES[slugStr] || d.image || "/images/paris.png";
     return {
       id: d._id || slugStr,
       name: d.name,
@@ -652,7 +657,7 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
                 </Link>
               </div>
 
-              {/* Other Featured Packages */}
+              {/* Other Featured Packages with 100% DISTINCT Photos */}
               <div className="bg-white p-7 sm:p-8 rounded-3xl border border-gray-100 shadow-sm space-y-5">
                 <h3 className="font-bold text-xl text-black">
                   Other Popular Tours

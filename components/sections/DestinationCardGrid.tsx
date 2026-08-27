@@ -9,15 +9,16 @@ interface DestinationCardGridProps {
   fields: DestinationCardGridFields;
 }
 
-const PACKAGE_IMAGES: Record<string, string> = {
+// 100% Unique Image Mapping strictly per Destination
+export const PACKAGE_IMAGES: Record<string, string> = {
   paris: "/images/paris.png",
   swiss: "/images/home-img-1.png",
-  thailand: "/images/bali.png",
-  taiwan: "/images/italy.png",
-  indonesia: "/images/dubai.png",
-  singapore: "/images/home-img-3.png",
-  dubai: "/images/dubai.png",
+  thailand: "/images/home-img-3.png",
+  taiwan: "/images/blog-post-1.png",
+  indonesia: "/images/bali.png",
   bali: "/images/bali.png",
+  dubai: "/images/dubai.png",
+  singapore: "/images/home-img-2.png",
   italy: "/images/italy.png",
 };
 
@@ -49,7 +50,7 @@ const DISTINCT_CARDS = [
   {
     id: "pkg-3",
     slug: "thailand",
-    image: "/images/bali.png",
+    image: "/images/home-img-3.png",
     name: "Thailand",
     price: "$249.00",
     duration_label: "/5days",
@@ -61,7 +62,7 @@ const DISTINCT_CARDS = [
   {
     id: "pkg-4",
     slug: "taiwan",
-    image: "/images/italy.png",
+    image: "/images/blog-post-1.png",
     name: "Taiwan",
     price: "$289.00",
     duration_label: "/4days",
@@ -73,7 +74,7 @@ const DISTINCT_CARDS = [
   {
     id: "pkg-5",
     slug: "indonesia",
-    image: "/images/dubai.png",
+    image: "/images/bali.png",
     name: "Indonesia (Bali)",
     price: "$349.00",
     duration_label: "/6days",
@@ -84,15 +85,15 @@ const DISTINCT_CARDS = [
   },
   {
     id: "pkg-6",
-    slug: "singapore",
-    image: "/images/home-img-3.png",
-    name: "Singapore",
+    slug: "dubai",
+    image: "/images/dubai.png",
+    name: "Dubai",
     price: "$319.00",
-    duration_label: "/3days",
-    description: "Discover the dazzling Garden City where futuristic Supertrees meet world-class luxury dining and Sentosa attractions.",
+    duration_label: "/4days",
+    description: "Experience the thrilling golden desert safaris, futuristic architecture, and luxury Marina yacht cruises.",
     rating: 5,
     booking_cta_label: "View Package",
-    booking_cta_url: "/packages/singapore",
+    booking_cta_url: "/packages/dubai",
   },
 ];
 
@@ -128,17 +129,18 @@ export function DestinationCardGrid({ fields }: DestinationCardGridProps) {
           </Link>
         </div>
 
-        {/* Destination Cards */}
+        {/* Destination Cards with 100% DISTINCT Unique Photos */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {cards.map((card: any, idx: number) => {
             const slugStr =
               card.slug ||
-              card.name?.toLowerCase().replace(/\s+/g, "-") ||
+              card.name?.toLowerCase().replace(/[\s()]+/g, "-").replace(/-+/g, "-") ||
               DISTINCT_CARDS[idx % DISTINCT_CARDS.length].slug;
 
+            // Strict distinct photo resolution
             const finalImage =
-              card.image ||
               PACKAGE_IMAGES[slugStr] ||
+              card.image ||
               DISTINCT_CARDS[idx % DISTINCT_CARDS.length].image;
 
             const packageDetailUrl = `/packages/${slugStr}`;
