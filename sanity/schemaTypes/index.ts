@@ -8,6 +8,9 @@ import { aboutPageType } from "./aboutPage";
 import { contactPageType } from "./contactPage";
 import { packagesPageType } from "./packagesPage";
 import { customPageType } from "./customPage";
+import { contactInquiryType } from "./contactInquiry";
+import { newsletterSubscriberType } from "./newsletterSubscriber";
+import { bookingInquiryType } from "./bookingInquiry";
 
 export const schemaTypes = [
   // Global
@@ -25,4 +28,9 @@ export const schemaTypes = [
   serviceType,
   testimonialType,
   blogPostType,
+
+  // Leads & Inquiries
+  contactInquiryType,
+  newsletterSubscriberType,
+  bookingInquiryType,
 ];

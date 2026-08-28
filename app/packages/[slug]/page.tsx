@@ -7,6 +7,7 @@ import { singleDestinationQuery, destinationsQuery } from "@/sanity/lib/queries"
 import { Container } from "@/components/ui/Container";
 import { DestinationCardGrid } from "@/components/sections/DestinationCardGrid";
 import { CtaContactCard } from "@/components/sections/CtaContactCard";
+import { PackageBookingForm } from "@/components/sections/PackageBookingForm";
 import {
   Star,
   Clock,
@@ -532,85 +533,7 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
               </div>
 
               {/* Inquiry & Booking Form Card */}
-              <div className="p-8 sm:p-10 bg-white rounded-3xl border border-gray-200 shadow-lg space-y-6">
-                <div className="space-y-2">
-                  <span className="text-xs uppercase font-bold text-orange-500 tracking-wider">
-                    Instant Reservation
-                  </span>
-                  <h3 className="font-bold text-2xl sm:text-3xl text-black">
-                    Book This Tour Package
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#777777]">
-                    Fill in your travel dates and requirements. Our senior travel consultant will confirm availability within 2 hours.
-                  </p>
-                </div>
-
-                <form className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
-                  <div>
-                    <label className="block text-xs font-semibold text-black mb-1.5">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="e.g. John Doe"
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-black"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-black mb-1.5">
-                      Email Address *
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="e.g. john@example.com"
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-black"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-black mb-1.5">
-                      Phone Number *
-                    </label>
-                    <input
-                      type="tel"
-                      placeholder="+1 (555) 000-0000"
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-black"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-black mb-1.5">
-                      Number of Guests
-                    </label>
-                    <input
-                      type="number"
-                      min="1"
-                      defaultValue="2"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-black"
-                    />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label className="block text-xs font-semibold text-black mb-1.5">
-                      Special Requests / Notes
-                    </label>
-                    <textarea
-                      rows={3}
-                      placeholder="Tell us any dietary requirements, extra nights, or custom requests..."
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-black resize-none"
-                    />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <button
-                      type="submit"
-                      className="w-full py-4 btn-slide btn-shine text-white font-bold text-sm rounded-xl shadow-lg flex items-center justify-center gap-2"
-                    >
-                      <Send className="w-4 h-4" />
-                      <span>Submit Booking Request</span>
-                    </button>
-                  </div>
-                </form>
-              </div>
+              <PackageBookingForm packageName={pkg.name} />
             </div>
 
             {/* Right Column: Sidebar (4 cols) */}

@@ -67,4 +67,11 @@ export const structure: StructureResolver = (S) =>
       S.documentTypeListItem("service").title("💼 Services (Why Choose Us)"),
       S.documentTypeListItem("testimonial").title("💬 Testimonials & Reviews"),
       S.documentTypeListItem("blogPost").title("✍️ Blog Posts & Articles"),
+
+      S.divider(),
+
+      // 4. Leads & Customer Inquiries
+      S.documentTypeListItem("contactInquiry").title("📬 Contact Messages"),
+      S.documentTypeListItem("newsletterSubscriber").title("✉️ Newsletter Subscribers"),
+      S.documentTypeListItem("bookingInquiry").title("🎫 Tour Bookings"),
     ]);

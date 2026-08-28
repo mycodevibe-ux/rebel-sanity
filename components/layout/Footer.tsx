@@ -16,17 +16,31 @@ export function Footer({ data }: FooterProps) {
   const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   if (pathname?.startsWith("/studio")) {
     return null;
   }
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
+    if (!email.trim()) return;
+
+    setLoading(true);
+    try {
+      await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
       setIsSubscribed(true);
-      setTimeout(() => setIsSubscribed(false), 4000);
       setEmail("");
+      setTimeout(() => setIsSubscribed(false), 6000);
+    } catch (err) {
+      setIsSubscribed(true);
+      setEmail("");
+    } finally {
+      setLoading(false);
     }
   };
 
