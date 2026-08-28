@@ -8,7 +8,7 @@ import { Container } from "@/components/ui/Container";
 import { SidebarCategories } from "@/components/sections/SidebarCategories";
 import { SidebarRecentPosts } from "@/components/sections/SidebarRecentPosts";
 import { CtaContactCard } from "@/components/sections/CtaContactCard";
-import { CommentForm } from "@/components/sections/CommentForm";
+import { BlogCommentsSection } from "@/components/sections/BlogCommentsSection";
 import { BlogCardGrid } from "@/components/sections/BlogCardGrid";
 import { Calendar, User, Tag, Facebook, Twitter, Linkedin, ArrowLeft } from "lucide-react";
 import type { Metadata } from "next";
@@ -373,14 +373,8 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 </div>
               </article>
 
-              {/* Comment Form Card */}
-              <CommentForm
-                fields={{
-                  heading: "Leave a Reply",
-                  description: "Your email address will not be published. Required fields are marked *",
-                  submit_label: "Post Comment",
-                }}
-              />
+              {/* Live Comments & Comment Form */}
+              <BlogCommentsSection postSlug={post.slug} postTitle={post.title} />
             </div>
 
             {/* Right Column: Sidebar (4 cols) */}

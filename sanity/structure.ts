@@ -65,8 +65,9 @@ export const structure: StructureResolver = (S) =>
       // 3. Collections
       S.documentTypeListItem("destination").title("🌴 Destinations & Packages"),
       S.documentTypeListItem("service").title("💼 Services (Why Choose Us)"),
-      S.documentTypeListItem("testimonial").title("💬 Testimonials & Reviews"),
+      S.documentTypeListItem("testimonial").title("⭐ Testimonials & Reviews"),
       S.documentTypeListItem("blogPost").title("✍️ Blog Posts & Articles"),
+      S.documentTypeListItem("blogComment").title("💬 Blog Comments"),
 
       S.divider(),
 

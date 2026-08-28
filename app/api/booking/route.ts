@@ -59,6 +59,38 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Optional Admin Email Dispatch for Tour Bookings
+    const resendKey = process.env.RESEND_API_KEY;
+    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || "mangesh@turbosoft.uk";
+
+    if (resendKey) {
+      try {
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "Rebel Rover Bookings <onboarding@resend.dev>",
+            to: [adminEmail],
+            subject: `🎫 New Tour Booking Request: ${packageName} from ${name}`,
+            html: `
+              <h2>New Tour Booking Received!</h2>
+              <p><strong>Package:</strong> ${packageName}</p>
+              <p><strong>Lead Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Phone:</strong> ${phone}</p>
+              <p><strong>Number of Guests:</strong> ${guests}</p>
+              <p><strong>Special Requests:</strong> ${specialRequests || "None"}</p>
+            `,
+          }),
+        });
+      } catch (emailErr) {
+        console.warn("Booking email alert skipped:", emailErr);
+      }
+    }
+
     return NextResponse.json({
       success: true,
       message: `Thank you, ${name}! Your booking request for ${packageName || "this tour"} has been received. Our travel consultant will contact you within 2 hours.`,

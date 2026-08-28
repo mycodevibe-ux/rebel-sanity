@@ -7,6 +7,7 @@ import { AsymmetricFeatureRow } from "./AsymmetricFeatureRow";
 import { PartnerLogos } from "./PartnerLogos";
 import { TestimonialGrid } from "./TestimonialGrid";
 import { DestinationCardGrid } from "./DestinationCardGrid";
+import { PackagesFilterSection } from "./PackagesFilterSection";
 import { BlogCardGrid } from "./BlogCardGrid";
 import { ArticleBody } from "./ArticleBody";
 import { SidebarCategories } from "./SidebarCategories";
@@ -50,7 +51,7 @@ export function RowRenderer({ rows }: RowRendererProps) {
             return <TestimonialGrid key={row.id} fields={row.fields} />;
 
           case "destination_card_grid":
-            return <DestinationCardGrid key={row.id} fields={row.fields} />;
+            return <PackagesFilterSection key={row.id} />;
 
           case "airplane_banner":
             return <AirplaneBanner key={row.id} />;

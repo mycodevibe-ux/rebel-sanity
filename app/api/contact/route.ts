@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     // 1. Store in instant server lead store
     leadsStore.contacts.unshift(newLead);
 
-    // 2. Also try Sanity if write token exists
+    // 2. Save into Sanity Cloud Database
     const token =
       process.env.SANITY_API_WRITE_TOKEN ||
       process.env.SANITY_API_TOKEN ||
@@ -52,10 +52,43 @@ export async function POST(req: NextRequest) {
           subject: subject || "General Inquiry",
           phone: phone || "Not provided",
           message,
+          status: "New",
           submittedAt: new Date().toISOString(),
         });
       } catch (sanityErr) {
         console.warn("Sanity write skipped (token issue):", sanityErr);
+      }
+    }
+
+    // 3. Optional Admin Email Dispatch (if RESEND_API_KEY is configured)
+    const resendKey = process.env.RESEND_API_KEY;
+    const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL || "mangesh@turbosoft.uk";
+
+    if (resendKey) {
+      try {
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "Rebel Rover Alerts <onboarding@resend.dev>",
+            to: [adminEmail],
+            subject: `🔔 New Contact Inquiry: ${subject || "Website Lead"} from ${name}`,
+            html: `
+              <h2>New Contact Message Received!</h2>
+              <p><strong>Name:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
+              <p><strong>Subject:</strong> ${subject}</p>
+              <p><strong>Message:</strong></p>
+              <p style="background: #f4f4f4; padding: 12px; border-radius: 8px;">${message}</p>
+            `,
+          }),
+        });
+      } catch (emailErr) {
+        console.warn("Email alert dispatch skipped:", emailErr);
       }
     }
 

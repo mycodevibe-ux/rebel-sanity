@@ -11,6 +11,7 @@ import { customPageType } from "./customPage";
 import { contactInquiryType } from "./contactInquiry";
 import { newsletterSubscriberType } from "./newsletterSubscriber";
 import { bookingInquiryType } from "./bookingInquiry";
+import { blogCommentType } from "./blogComment";
 
 export const schemaTypes = [
   // Global
@@ -28,6 +29,7 @@ export const schemaTypes = [
   serviceType,
   testimonialType,
   blogPostType,
+  blogCommentType,
 
   // Leads & Inquiries
   contactInquiryType,
