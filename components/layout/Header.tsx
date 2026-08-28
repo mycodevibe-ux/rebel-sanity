@@ -29,11 +29,6 @@ export function Header({ data }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Hide header on Sanity Studio route for clean full-screen admin
-  if (pathname?.startsWith("/studio")) {
-    return null;
-  }
-
   const navItems = data?.navLinks && data.navLinks.length > 0 ? data.navLinks : defaultNavItems;
   const logoSrc = data?.logo?.src || "/images/logo1.png";
   const popularTags = ["Bali", "Paris", "Swiss", "Thailand", "Dubai", "Singapore"];
@@ -47,16 +42,28 @@ export function Header({ data }: HeaderProps) {
     }
   }, [isSearchOpen]);
 
-  // Handle ESC key to close search popup
+  // While the search popup is open: close on ESC and lock body scroll
   useEffect(() => {
+    if (!isSearchOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsSearchOpen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isSearchOpen]);
+
+  // Hide header on Sanity Studio route for clean full-screen admin.
+  // Must stay below all hooks so the hook order never changes between renders.
+  if (pathname?.startsWith("/studio")) {
+    return null;
+  }
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -159,73 +166,85 @@ export function Header({ data }: HeaderProps) {
         )}
       </header>
 
-      {/* Smooth Search Popup Modal Overlay */}
+      {/* Search Popup — drops in just below the header, aligned with the search icon */}
       {isSearchOpen && (
-        <div className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-[100] overflow-y-auto">
           {/* Click outside backdrop layer */}
-          <div
-            className="absolute inset-0"
+          <button
+            type="button"
+            aria-label="Close search"
             onClick={() => setIsSearchOpen(false)}
+            className="fixed inset-0 w-full h-full bg-black/60 backdrop-blur-sm cursor-default animate-overlay-fade"
           />
 
           {/* Search Dialog Card */}
-          <div className="relative w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100 z-10 animate-in zoom-in-95 duration-200">
-            {/* Header with Close Button */}
-            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-              <div className="flex items-center gap-2">
-                <Search className="w-5 h-5 text-black" />
-                <span className="font-poppins font-bold text-lg text-black">
-                  Search Rebel Rover
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsSearchOpen(false)}
-                aria-label="Close search"
-                className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-black flex items-center justify-center transition-colors active:scale-95"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Search Input Form */}
-            <form onSubmit={handleSearchSubmit} className="mt-6">
-              <div className="relative flex items-center">
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search destinations (e.g. Bali, Paris, Swiss Alps...)"
-                  className="w-full pl-6 pr-32 py-4 rounded-full bg-[#f6f6f6] text-black placeholder:text-[#888888] font-poppins text-sm sm:text-base border border-transparent focus:border-black focus:bg-white focus:outline-none transition-all"
-                />
+          <div className="relative flex justify-center px-4 sm:px-6 pt-24 sm:pt-28 pb-8">
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Search Rebel Rover"
+              className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl animate-panel-drop"
+            >
+              {/* Header with Close Button */}
+              <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center">
+                    <Search className="w-4 h-4" />
+                  </span>
+                  <span className="font-poppins font-bold text-base sm:text-lg text-black">
+                    Where do you want to go?
+                  </span>
+                </div>
                 <button
-                  type="submit"
-                  className="absolute right-2 px-6 py-2.5 btn-slide btn-shine text-white font-poppins font-bold text-xs sm:text-sm rounded-full shadow-md flex items-center gap-1.5"
+                  type="button"
+                  onClick={() => setIsSearchOpen(false)}
+                  aria-label="Close search"
+                  className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-black flex items-center justify-center transition-colors active:scale-95"
                 >
-                  <span>Search</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-            </form>
 
-            {/* Popular Search Suggestions */}
-            <div className="mt-6 pt-5 border-t border-gray-100">
-              <span className="font-poppins text-xs font-semibold text-[#888888] uppercase tracking-wider block mb-3">
-                Popular Destinations
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {popularTags.map((tag) => (
+              {/* Search Input Form */}
+              <form onSubmit={handleSearchSubmit} className="mt-5 sm:mt-6">
+                <div className="relative flex items-center">
+                  <Search className="absolute left-5 w-4 h-4 text-[#888888] pointer-events-none" />
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search destinations (e.g. Bali, Paris...)"
+                    className="w-full pl-12 pr-[104px] sm:pr-32 py-3.5 sm:py-4 rounded-full bg-[#f6f6f6] text-black placeholder:text-[#888888] font-poppins text-base border border-transparent focus:border-black focus:bg-white focus:outline-none transition-all"
+                  />
                   <button
-                    key={tag}
-                    type="button"
-                    onClick={() => handleTagClick(tag)}
-                    className="px-4 py-2 rounded-full bg-gray-100 hover:bg-black hover:text-white text-gray-700 font-poppins text-xs font-medium transition-all flex items-center gap-1.5 active:scale-95"
+                    type="submit"
+                    className="absolute right-1.5 px-4 sm:px-6 py-2.5 sm:py-3 btn-slide btn-shine text-white font-poppins font-bold text-xs sm:text-sm rounded-full flex items-center gap-1.5"
                   >
-                    <MapPin className="w-3.5 h-3.5 opacity-60" />
-                    <span>{tag}</span>
+                    <span>Search</span>
+                    <ArrowRight className="w-3.5 h-3.5 hidden sm:block" />
                   </button>
-                ))}
+                </div>
+              </form>
+
+              {/* Popular Search Suggestions */}
+              <div className="mt-5 sm:mt-6 pt-5 border-t border-gray-100">
+                <span className="font-poppins text-xs font-semibold text-[#888888] uppercase tracking-wider block mb-3">
+                  Popular Destinations
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {popularTags.map((tag) => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => handleTagClick(tag)}
+                      className="px-4 py-2 rounded-full bg-gray-100 hover:bg-black hover:text-white text-gray-700 font-poppins text-xs font-medium transition-all flex items-center gap-1.5 active:scale-95"
+                    >
+                      <MapPin className="w-3.5 h-3.5 opacity-60" />
+                      <span>{tag}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
