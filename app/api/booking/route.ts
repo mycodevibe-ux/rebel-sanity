@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { leadsStore } from "@/lib/leadsStore";
 import { createClient } from "next-sanity";
 import { projectId, dataset, apiVersion } from "@/sanity/env";
 
@@ -14,6 +15,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const newBooking = {
+      id: `book-${Date.now()}`,
+      packageName: packageName || "General Tour Package",
+      name,
+      email,
+      phone,
+      guests: guests || "2",
+      specialRequests: specialRequests || "",
+      createdAt: new Date().toISOString(),
+    };
+
+    leadsStore.bookings.unshift(newBooking);
+
     const token =
       process.env.SANITY_API_WRITE_TOKEN ||
       process.env.SANITY_API_TOKEN ||
@@ -21,29 +35,34 @@ export async function POST(req: NextRequest) {
       process.env.NEXT_PUBLIC_SANITY_API_TOKEN;
 
     if (token) {
-      const writeClient = createClient({
-        projectId,
-        dataset,
-        apiVersion,
-        token,
-        useCdn: false,
-      });
+      try {
+        const writeClient = createClient({
+          projectId,
+          dataset,
+          apiVersion,
+          token,
+          useCdn: false,
+        });
 
-      await writeClient.create({
-        _type: "bookingInquiry",
-        packageName: packageName || "General Tour Package",
-        name,
-        email,
-        phone,
-        guests: guests || "2",
-        specialRequests: specialRequests || "",
-        submittedAt: new Date().toISOString(),
-      });
+        await writeClient.create({
+          _type: "bookingInquiry",
+          packageName: packageName || "General Tour Package",
+          name,
+          email,
+          phone,
+          guests: guests || "2",
+          specialRequests: specialRequests || "",
+          submittedAt: new Date().toISOString(),
+        });
+      } catch (sanityErr) {
+        console.warn("Sanity booking write skipped:", sanityErr);
+      }
     }
 
     return NextResponse.json({
       success: true,
       message: `Thank you, ${name}! Your booking request for ${packageName || "this tour"} has been received. Our travel consultant will contact you within 2 hours.`,
+      booking: newBooking,
     });
   } catch (error: any) {
     console.error("Error processing booking inquiry:", error);
@@ -52,4 +71,11 @@ export async function POST(req: NextRequest) {
       message: "Thank you! Your booking inquiry has been received.",
     });
   }
+}
+
+export async function GET() {
+  return NextResponse.json({
+    success: true,
+    bookings: leadsStore.bookings,
+  });
 }
