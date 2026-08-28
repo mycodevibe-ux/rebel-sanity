@@ -8,6 +8,7 @@ import { Container } from "@/components/ui/Container";
 import { DestinationCardGrid } from "@/components/sections/DestinationCardGrid";
 import { CtaContactCard } from "@/components/sections/CtaContactCard";
 import { PackageBookingForm } from "@/components/sections/PackageBookingForm";
+import { ExpertConsultationModal } from "@/components/sections/ExpertConsultationModal";
 import {
   Star,
   Clock,
@@ -571,13 +572,12 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
                   </div>
                 </div>
 
-                <Link
-                  href="/contact"
-                  className="w-full py-3.5 btn-slide btn-shine text-white font-bold text-xs sm:text-sm rounded-2xl shadow-md flex items-center justify-center gap-2 text-center"
-                >
-                  <PhoneCall className="w-4 h-4" />
-                  <span>Talk to Destination Expert</span>
-                </Link>
+                <ExpertConsultationModal
+                  packageName={pkg.name}
+                  location={pkg.location}
+                  price={pkg.price}
+                  duration={pkg.duration}
+                />
               </div>
 
               {/* Other Featured Packages with 100% DISTINCT Photos */}
