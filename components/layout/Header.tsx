@@ -5,15 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { HeaderData } from "@/types/cms";
-import { Menu, X, Search, MapPin, ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { Menu, X, Search, MapPin, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface HeaderProps {
   data: HeaderData;
 }
 
-const defaultNavItems = [
+const defaultNavLinks = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "Packages", href: "/packages" },
@@ -21,19 +21,32 @@ const defaultNavItems = [
   { label: "Contact", href: "/contact" },
 ];
 
+const popularTags = ["Bali", "Paris", "Swiss", "Thailand", "Dubai", "Singapore"];
+
 export function Header({ data }: HeaderProps) {
-  const pathname = usePathname();
-  const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const navItems = data?.navLinks && data.navLinks.length > 0 ? data.navLinks : defaultNavItems;
-  const logoSrc = data?.logo?.src || "/images/logo1.png";
-  const popularTags = ["Bali", "Paris", "Swiss", "Thailand", "Dubai", "Singapore"];
+  const pathname = usePathname();
+  const router = useRouter();
 
-  // Focus input when search popup opens
+  // Scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Autofocus search input when modal opens
   useEffect(() => {
     if (isSearchOpen) {
       setTimeout(() => {
@@ -42,74 +55,66 @@ export function Header({ data }: HeaderProps) {
     }
   }, [isSearchOpen]);
 
-  // While the search popup is open: close on ESC and lock body scroll
-  useEffect(() => {
-    if (!isSearchOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setIsSearchOpen(false);
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [isSearchOpen]);
-
-  // Hide header on Sanity Studio route for clean full-screen admin.
-  // Must stay below all hooks so the hook order never changes between renders.
-  if (pathname?.startsWith("/studio")) {
-    return null;
-  }
-
+  // Handle Search Submission
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      setIsSearchOpen(false);
-      router.push(`/packages?q=${encodeURIComponent(searchQuery.trim())}`);
-    }
+    if (!searchQuery.trim()) return;
+    setIsSearchOpen(false);
+    router.push(`/packages?location=${encodeURIComponent(searchQuery.trim())}`);
   };
 
   const handleTagClick = (tag: string) => {
+    setSearchQuery(tag);
     setIsSearchOpen(false);
     router.push(`/packages?location=${encodeURIComponent(tag)}`);
   };
 
+  const isLightPage = false;
+  const logoSrc = data?.logo?.src || "/images/logo1.png";
+  const navItems = data?.navLinks && data.navLinks.length > 0 ? data.navLinks : defaultNavLinks;
+
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-md border-b border-white/10 py-3 sm:py-4 transition-all">
-        <Container size="content" className="flex items-center justify-between px-4 sm:px-8">
-          {/* Header Logo */}
-          <Link href="/" className="flex items-center group">
-            <div className="relative h-14 sm:h-16 lg:h-18 w-72 sm:w-80 lg:w-96">
+      <header
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          scrolled
+            ? "bg-black/90 backdrop-blur-md py-4 shadow-lg"
+            : "bg-transparent py-6"
+        )}
+      >
+        <Container size="content" className="flex items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 relative z-10">
+            <div className="relative h-10 w-36 sm:w-44">
               <Image
                 src={logoSrc}
-                alt={data?.logo?.alt || "Rebel Rover Logo"}
+                alt={data?.logo?.alt || "Rebel Rover"}
                 fill
                 priority
-                className="object-contain object-left"
+                className="object-contain object-left brightness-0 invert"
               />
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-9 xl:gap-12">
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-8">
             {navItems.map((item) => {
               const isActive =
-                item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
               return (
                 <Link
                   key={item.label}
                   href={item.href}
                   className={cn(
-                    "font-poppins text-base font-medium transition-colors select-none",
+                    "font-poppins text-sm font-medium tracking-wide transition-colors relative py-1",
+                    isLightPage && !scrolled ? "text-black" : "text-white",
                     isActive
-                      ? "text-white font-bold"
-                      : "text-white/90 hover:text-white"
+                      ? "font-bold text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-orange-500 after:rounded-full"
+                      : "opacity-80 hover:opacity-100"
                   )}
                 >
                   {item.label}
@@ -124,16 +129,9 @@ export function Header({ data }: HeaderProps) {
               type="button"
               onClick={() => setIsSearchOpen(true)}
               aria-label="Open search popup"
-              className="w-10 h-10 flex items-center justify-center text-white hover:opacity-80 transition-opacity active:scale-95"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all active:scale-95 border border-white/15"
             >
-              <div className="relative w-5 h-5">
-                <Image
-                  src="/images/search.svg"
-                  alt="Search"
-                  fill
-                  className="brightness-0 invert object-contain"
-                />
-              </div>
+              <Search className="w-4 h-4 text-white" />
             </button>
 
             {/* Mobile Menu Toggle */}
@@ -166,15 +164,15 @@ export function Header({ data }: HeaderProps) {
         )}
       </header>
 
-      {/* Search Popup — drops in just below the header, aligned with the search icon */}
+      {/* Search Popup Modal */}
       {isSearchOpen && (
-        <div className="fixed inset-0 z-[100] overflow-y-auto">
+        <div className="fixed inset-0 z-[100] overflow-y-auto font-poppins">
           {/* Click outside backdrop layer */}
           <button
             type="button"
             aria-label="Close search"
             onClick={() => setIsSearchOpen(false)}
-            className="fixed inset-0 w-full h-full bg-black/60 backdrop-blur-sm cursor-default animate-overlay-fade"
+            className="fixed inset-0 w-full h-full bg-black/70 backdrop-blur-sm cursor-default"
           />
 
           {/* Search Dialog Card */}
@@ -183,17 +181,22 @@ export function Header({ data }: HeaderProps) {
               role="dialog"
               aria-modal="true"
               aria-label="Search Rebel Rover"
-              className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 shadow-2xl animate-panel-drop"
+              className="relative w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-gray-100"
             >
-              {/* Header with Close Button */}
-              <div className="flex items-center justify-between pb-4 border-b border-gray-100">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-9 h-9 rounded-full bg-black text-white flex items-center justify-center">
-                    <Search className="w-4 h-4" />
+              {/* Header with Title and Close Button */}
+              <div className="flex items-center justify-between pb-5 border-b border-gray-100">
+                <div className="flex items-center gap-3">
+                  <span className="w-10 h-10 rounded-2xl bg-black text-white flex items-center justify-center shadow-md">
+                    <Search className="w-5 h-5" />
                   </span>
-                  <span className="font-poppins font-bold text-base sm:text-lg text-black">
-                    Where do you want to go?
-                  </span>
+                  <div>
+                    <span className="font-poppins font-bold text-lg sm:text-xl text-black block leading-tight">
+                      Where do you want to go?
+                    </span>
+                    <span className="text-xs text-gray-400 font-normal">
+                      Search vacation packages, tours, and guides
+                    </span>
+                  </div>
                 </div>
                 <button
                   type="button"
@@ -205,31 +208,33 @@ export function Header({ data }: HeaderProps) {
                 </button>
               </div>
 
-              {/* Search Input Form */}
-              <form onSubmit={handleSearchSubmit} className="mt-5 sm:mt-6">
-                <div className="relative flex items-center">
-                  <Search className="absolute left-5 w-4 h-4 text-[#888888] pointer-events-none" />
+              {/* Seamless Unified Search Input Form */}
+              <form onSubmit={handleSearchSubmit} className="mt-6">
+                <div className="flex items-center bg-[#f8f9fa] border border-gray-200 focus-within:border-black focus-within:bg-white rounded-full p-1.5 sm:p-2 transition-all shadow-inner">
+                  <div className="pl-4 pr-2 flex items-center text-gray-400">
+                    <Search className="w-5 h-5" />
+                  </div>
                   <input
                     ref={searchInputRef}
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search destinations (e.g. Bali, Paris...)"
-                    className="w-full pl-12 pr-[104px] sm:pr-32 py-3.5 sm:py-4 rounded-full bg-[#f6f6f6] text-black placeholder:text-[#888888] font-poppins text-base border border-transparent focus:border-black focus:bg-white focus:outline-none transition-all"
+                    placeholder="Search destinations (e.g. Bali, Paris, Swiss...)"
+                    className="w-full bg-transparent text-black placeholder:text-gray-400 font-poppins text-sm sm:text-base focus:outline-none py-2.5"
                   />
                   <button
                     type="submit"
-                    className="absolute right-1.5 px-4 sm:px-6 py-2.5 sm:py-3 btn-slide btn-shine text-white font-poppins font-bold text-xs sm:text-sm rounded-full flex items-center gap-1.5"
+                    className="px-6 sm:px-8 py-3 btn-slide btn-shine text-white font-poppins font-bold text-xs sm:text-sm rounded-full shrink-0 shadow-md flex items-center gap-2"
                   >
                     <span>Search</span>
-                    <ArrowRight className="w-3.5 h-3.5 hidden sm:block" />
+                    <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
               </form>
 
               {/* Popular Search Suggestions */}
-              <div className="mt-5 sm:mt-6 pt-5 border-t border-gray-100">
-                <span className="font-poppins text-xs font-semibold text-[#888888] uppercase tracking-wider block mb-3">
+              <div className="mt-6 pt-5 border-t border-gray-100">
+                <span className="font-poppins text-xs font-bold text-gray-400 uppercase tracking-wider block mb-3">
                   Popular Destinations
                 </span>
                 <div className="flex flex-wrap gap-2">
@@ -238,9 +243,9 @@ export function Header({ data }: HeaderProps) {
                       key={tag}
                       type="button"
                       onClick={() => handleTagClick(tag)}
-                      className="px-4 py-2 rounded-full bg-gray-100 hover:bg-black hover:text-white text-gray-700 font-poppins text-xs font-medium transition-all flex items-center gap-1.5 active:scale-95"
+                      className="px-4 py-2 rounded-full bg-gray-100 hover:bg-black hover:text-white text-gray-700 font-poppins text-xs font-semibold transition-all flex items-center gap-1.5 active:scale-95"
                     >
-                      <MapPin className="w-3.5 h-3.5 opacity-60" />
+                      <MapPin className="w-3.5 h-3.5 opacity-60 text-orange-500" />
                       <span>{tag}</span>
                     </button>
                   ))}
