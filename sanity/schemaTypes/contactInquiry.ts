@@ -2,56 +2,64 @@ import { defineField, defineType } from "sanity";
 
 export const contactInquiryType = defineType({
   name: "contactInquiry",
-  title: "Contact Inquiries",
+  title: "Contact Messages",
   type: "document",
   fields: [
     defineField({
       name: "name",
       title: "Sender Name",
       type: "string",
-      readOnly: true,
     }),
     defineField({
       name: "email",
       title: "Email Address",
       type: "string",
-      readOnly: true,
     }),
     defineField({
       name: "subject",
-      title: "Subject / Inquired Service",
+      title: "Subject / Topic",
       type: "string",
-      readOnly: true,
     }),
     defineField({
       name: "phone",
       title: "Phone Number",
       type: "string",
-      readOnly: true,
     }),
     defineField({
       name: "message",
       title: "Message Content",
       type: "text",
-      readOnly: true,
+    }),
+    defineField({
+      name: "status",
+      title: "Lead Status",
+      type: "string",
+      initialValue: "New",
+      options: {
+        list: [
+          { title: "🟢 New Message", value: "New" },
+          { title: "🟡 In Progress / Contacted", value: "In Progress" },
+          { title: "✅ Completed / Resolved", value: "Completed" },
+        ],
+      },
     }),
     defineField({
       name: "submittedAt",
-      title: "Submitted At",
+      title: "Submitted Date & Time",
       type: "datetime",
-      readOnly: true,
     }),
   ],
   preview: {
     select: {
       title: "name",
-      subtitle: "email",
+      subtitle: "subject",
       date: "submittedAt",
+      status: "status",
     },
-    prepare({ title, subtitle, date }) {
+    prepare({ title, subtitle, date, status }) {
       return {
         title: title || "New Inquiry",
-        subtitle: `${subtitle || ""} • ${date ? new Date(date).toLocaleDateString() : ""}`,
+        subtitle: `[${status || "New"}] ${subtitle || "No subject"} • ${date ? new Date(date).toLocaleDateString() : ""}`,
       };
     },
   },

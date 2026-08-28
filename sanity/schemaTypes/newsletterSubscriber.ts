@@ -7,26 +7,43 @@ export const newsletterSubscriberType = defineType({
   fields: [
     defineField({
       name: "email",
-      title: "Subscriber Email",
+      title: "Subscriber Email Address",
       type: "string",
-      readOnly: true,
+    }),
+    defineField({
+      name: "status",
+      title: "Subscription Status",
+      type: "string",
+      initialValue: "Active",
+      options: {
+        list: [
+          { title: "Active (Subscribed)", value: "Active" },
+          { title: "Unsubscribed", value: "Unsubscribed" },
+        ],
+      },
+    }),
+    defineField({
+      name: "source",
+      title: "Source Form",
+      type: "string",
+      initialValue: "Website Footer Newsletter",
     }),
     defineField({
       name: "subscribedAt",
-      title: "Subscribed At",
+      title: "Subscribed Date & Time",
       type: "datetime",
-      readOnly: true,
     }),
   ],
   preview: {
     select: {
       title: "email",
+      subtitle: "status",
       date: "subscribedAt",
     },
-    prepare({ title, date }) {
+    prepare({ title, subtitle, date }) {
       return {
         title: title || "New Subscriber",
-        subtitle: date ? `Joined ${new Date(date).toLocaleDateString()}` : "Subscribed",
+        subtitle: `${subtitle || "Active"} • ${date ? new Date(date).toLocaleString() : "Recently"}`,
       };
     },
   },
