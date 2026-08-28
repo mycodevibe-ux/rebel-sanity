@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { client } from "@/sanity/lib/client";
+import { createClient } from "next-sanity";
+import { projectId, dataset, apiVersion } from "@/sanity/env";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,9 +14,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const token = process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_API_READ_TOKEN;
+    const token =
+      process.env.SANITY_API_WRITE_TOKEN ||
+      process.env.SANITY_API_TOKEN ||
+      process.env.SANITY_TOKEN ||
+      process.env.NEXT_PUBLIC_SANITY_API_TOKEN;
+
     if (token) {
-      const writeClient = client.withConfig({ token, useCdn: false });
+      const writeClient = createClient({
+        projectId,
+        dataset,
+        apiVersion,
+        token,
+        useCdn: false,
+      });
+
       await writeClient.create({
         _type: "bookingInquiry",
         packageName: packageName || "General Tour Package",
